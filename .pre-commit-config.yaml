@@ -23,3 +23,5 @@ repos:
   rev: 0.1.0
   hooks:
   - id: license-headers
+    args:
+      - --update-year

@@ -14,7 +14,7 @@ docs/_build/
 # Environments
 .venv*
 
-# MacOS 
+# MacOS
 .DS_Store
 
 # VScode

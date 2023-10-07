@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pre-commit-hooks"
+authors = [{ name = "Andrey Rybakov", email = "rybakov.ad@icloud.com" }]
+description = "Custom pre-commit hooks"
+readme = "README.rst"
+requires-python = ">=3.6"
+license = { text = "MIT License" }
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python :: 3",
+]
+dependencies = []
+dynamic = ["version"]
+
+[project.scripts]
+license-header = "pre_commit_hooks.license_header:main"

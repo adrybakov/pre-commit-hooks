@@ -37,7 +37,7 @@ def update_year(license_text):
     * 2019 - 2020
         Updated to 2019 - 2023.
 
-    Every sequence of four digits, starting from 1 or 2, is considered a year.
+    Every sequence of four digits, starting from 1 or 2, is considered to be a year.
 
     Parameters
     ----------
@@ -84,8 +84,9 @@ def apply_license(file, license_text):
     r"""
     Insert license text at the top of the file.
 
-    Every line at the beginning of the file, which starts with a hash or
-    is empty (consist of only a spaces and a newline character), is removed.
+    Every line at the beginning of the file,
+    which is empty (consists only of spaces and a newline character at the end)
+    or starts with a hash symbol ("#") is removed.
 
     Parameters
     ----------
@@ -118,19 +119,23 @@ def apply_license(file, license_text):
 
 def main():
     parser = ArgumentParser()
-    parser.add_argument("filenames", nargs="*", help="Filenames to fix")
+    parser.add_argument(
+        "filenames",
+        nargs="*",
+        help="Files to which the license text is added.",
+    )
     parser.add_argument(
         "-lf",
         "--license-file",
         default="LICENSE",
-        help="Path to license file with the text for the headers",
+        help="Path to license file with the text for the headers.",
     )
     parser.add_argument(
         "-uy",
         "--update-year",
         default=False,
         action="store_true",
-        help="Update the year in the license text",
+        help="Update the year in the license text.",
     )
     args = parser.parse_args()
 

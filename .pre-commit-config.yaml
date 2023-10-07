@@ -22,4 +22,4 @@ repos:
 - repo: https://github.com/adrybakov/pre-commit-hooks
   rev: 0.1.0
   hooks:
-  - id: license-header
+  - id: license-headers

@@ -27,7 +27,8 @@ from argparse import ArgumentParser
 def update_year(license_text):
     r"""
     Update the year in the license text to the current year.
-    It assumes that the year in the license file is written in one of the following formats:
+    It assumes that the year in the license file is written in one of the following formats
+    (assumed that 2023 is the current year):
 
     * 2019
         Updated to 2019-2023.
@@ -127,7 +128,8 @@ def main():
     parser.add_argument(
         "-uy",
         "--update-year",
-        default=True,
+        default=False,
+        action="store_true",
         help="Update the year in the license text",
     )
     args = parser.parse_args()

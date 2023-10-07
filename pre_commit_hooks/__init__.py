@@ -20,6 +20,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from . import license_header
+from . import license_headers
 
 __version__ = "0.1.0"

@@ -1,6 +1,6 @@
-- id: license-header
-  name: Adding license headers
-  entry: license-header
+- id: license-headers
+  name: Add license headers
+  entry: license-headers
   language: python
   types_or: [python]
   description: Add license headers to python files

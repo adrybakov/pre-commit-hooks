@@ -17,4 +17,4 @@ dependencies = []
 dynamic = ["version"]
 
 [project.scripts]
-license-header = "pre_commit_hooks.license_header:main"
+license-headers = "pre_commit_hooks.license_headers:main"

@@ -76,7 +76,16 @@ html_css_files = ["custom.css"]
 
 html_title = f"{project} {version}"
 
-html_theme_options = {}
+html_theme_options = {
+    "light_css_variables": {
+        "color-brand-primary": "#198F88",
+    },
+    "dark_css_variables": {
+        "color-brand-primary": "#7BC4AC",
+    },
+    "navigation_with_keys": True,
+    "top_of_page_button": "edit",
+}
 
 # fix problem with autosummary and numpydoc:
 numpydoc_show_class_members = False

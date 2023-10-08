@@ -37,7 +37,7 @@ def update_year(license_text):
     * 2019 - 2020
         Updated to 2019 - 2023.
 
-    Every sequence of four digits, starting from 1 or 2, is considered to be a year.
+    Every sequence of four digits, starting from :math:`1` or :math:`2`, is considered to be a year.
 
     Parameters
     ----------

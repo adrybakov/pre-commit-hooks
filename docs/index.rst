@@ -1,6 +1,6 @@
-******************************
-Custom hooks for |pre-commit|_
-******************************
+***************************
+Custom hooks for pre-commit
+***************************
 
 Typically one need to install |pre-commit|_ first:
 
@@ -28,7 +28,7 @@ Once installed, you can check the version with:
 
     pre-commit --version
 
-Next step is to create a configuration file `.pre-commit-config.yaml`
+Next step is to create a configuration file **.pre-commit-config.yaml**
 in the root of the repository. It's content typically looks like this:
 
 .. code-block:: yaml
@@ -80,6 +80,10 @@ Then the hook can be used as a standalone script:
 
 .. code-block:: bash
 
-    <hook-name> --help
+    <hook-name> <arguments> ...
 
-Which will display the help message for the hook.
+You can display the help message for each script with the command:
+
+.. code-block:: bash
+
+    <hook-name> --help

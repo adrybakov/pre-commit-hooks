@@ -96,6 +96,8 @@ def apply_license(file, license_text, verbose=False):
         The license text as a list of lines.
     verbose : bool, default False
         Whether to indicate which file is changed.
+
+        .. versionadded:: 0.2.0
     """
 
     with open(file, "r") as f:

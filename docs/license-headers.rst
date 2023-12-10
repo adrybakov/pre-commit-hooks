@@ -19,14 +19,14 @@ Configuration
 .. code-block:: yaml
 
     - repo: https://github.com/adrybakov/pre-commit-hooks
-      rev: 0.1.0                # Check available tags on the GitHub page
+      rev: 0.2.0                # Check available tags on the GitHub page
       hooks:
         - id: license-headers   # Required
           args:                 # Optional (as the next lines)
             - --license-file    # If license summary is not in a "LICENSE" file
             - LICENSE.txt       # Path to the license summary file
             - --update-year     # If you want to automatically update the year
-            - --verbose         # If you want each modified filename to be printed
+            - --verbose         # (Added in 0.2.0) If you want each modified filename to be printed
 
 See `pre-commit docs <https://pre-commit.com/index.html#pre-commit-configyaml---hooks>`_
 for the list of additional parameters.

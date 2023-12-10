@@ -141,7 +141,7 @@ def main():
         action="store_true",
         help="Update the year in the license text.",
     )
-    parser.add_Argument(
+    parser.add_argument(
         "-v",
         "--verbose",
         default=False,

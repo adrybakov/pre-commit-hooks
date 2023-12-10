@@ -80,7 +80,7 @@ def update_year(license_text):
     return license_text
 
 
-def apply_license(file, license_text):
+def apply_license(file, license_text, verbose=False):
     r"""
     Insert license text at the top of the file.
 
@@ -94,6 +94,8 @@ def apply_license(file, license_text):
         The file to apply the license to.
     license_text : list of str
         The license text as a list of lines.
+    verbose : bool, default False
+        Whether to indicate which file is changed.
     """
 
     with open(file, "r") as f:
@@ -115,6 +117,8 @@ def apply_license(file, license_text):
         f.writelines(license_text)
         f.write("\n")
         f.writelines(lines)
+    if verbose:
+        print(f"Add license to the file {file}")
 
 
 def main():
@@ -137,6 +141,13 @@ def main():
         action="store_true",
         help="Update the year in the license text.",
     )
+    parser.add_Argument(
+        "-v",
+        "--verbose",
+        default=False,
+        action="store_true",
+        help="Whether to indicate which files are updated.",
+    )
     args = parser.parse_args()
 
     with open(args.license_file, "r") as f:
@@ -145,7 +156,7 @@ def main():
         license_text = update_year(license_text)
 
     for file in args.filenames:
-        apply_license(file, license_text)
+        apply_license(file, license_text, verbose=args.verbose)
 
 
 if __name__ == "__main__":

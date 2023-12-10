@@ -26,6 +26,7 @@ Configuration
             - --license-file    # If license summary is not in a "LICENSE" file
             - LICENSE.txt       # Path to the license summary file
             - --update-year     # If you want to automatically update the year
+            - --verbose         # If you want each modified filename to be printed
 
 See `pre-commit docs <https://pre-commit.com/index.html#pre-commit-configyaml---hooks>`_
 for the list of additional parameters.

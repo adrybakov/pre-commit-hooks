@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2023 Andrey Rybakov (rybakov.ad@icloud.com)
+# Copyright (c) 2023-2025 Andrey Rybakov (rybakov.ad@icloud.com)
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -22,4 +22,4 @@
 
 from . import license_headers
 
-__version__ = "0.1.0"
+__version__ = "0.2.1"

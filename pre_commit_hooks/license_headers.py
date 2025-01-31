@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2023 Andrey Rybakov (rybakov.ad@icloud.com)
+# Copyright (c) 2023-2025 Andrey Rybakov (rybakov.ad@icloud.com)
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -117,6 +117,7 @@ def apply_license(file, license_text, verbose=False):
 
     with open(file, "w", encoding="utf-8") as f:
         f.writelines(license_text)
+        f.write("\n")
         f.write("\n")
         f.writelines(lines)
     if verbose:

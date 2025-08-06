@@ -10,8 +10,16 @@ repos:
   rev: 0.3.0
   hooks:
   - id: license-headers
+    exclude: docs/*
     args:
-      - --update-year
+      - --license-template
+      - LICENSE.template
+      - --start-year
+      - "2023"
+      - --author-name
+      - Andrey Rybakov
+      - --author-email
+      - rybakov.ad@icloud.com
 - repo: https://github.com/astral-sh/ruff-pre-commit
   # Ruff version.
   rev: v0.12.7

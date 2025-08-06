@@ -1,6 +1,7 @@
+# ================================== LICENSE ===================================
 # MIT License
 #
-# Copyright (c) 2023 Andrey Rybakov (rybakov.ad@icloud.com)
+# Copyright (c) 2023 - 2025 Andrey Rybakov (rybakov.ad@icloud.com)
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -19,6 +20,9 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+#
+# ================================ END LICENSE =================================
+
 
 import sys
 from datetime import datetime
@@ -100,16 +104,6 @@ html_theme_options = {
             """,
             "class": "",
         },
-        {
-            "name": "Twitter",
-            "url": "https://twitter.com/adrybakov",
-            "html": """
-                <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M16,2.8724 C15.411,3.1337 14.779,3.3097 14.115,3.3891 C14.792,2.9831 15.313,2.3397 15.558,1.5731 C14.924,1.9497 14.221,2.2224 13.47,2.3704 C12.875,1.7317 12.021,1.3331 11.077,1.3331 C9.265,1.3331 7.795,2.8031 7.795,4.6157 C7.795,4.8731 7.824,5.1237 7.88,5.3637 C5.152,5.2271 2.733,3.9204 1.114,1.9337 C0.831,2.4191 0.669,2.9824 0.669,3.5844 C0.669,4.7231 1.249,5.7284 2.130,6.3171 C1.592,6.2991 1.085,6.1517 0.643,5.9064 L0.643,5.9471 C0.643,7.5377 1.774,8.8644 3.276,9.1657 C3.001,9.2417 2.710,9.2811 2.411,9.2811 C2.199,9.2811 1.994,9.2604 1.79,9.2224 C2.211,10.5264 3.423,11.4757 4.86,11.5024 C3.736,12.3824 2.321,12.9071 0.783,12.9071 C0.518,12.9071 0.257,12.8917 0,12.8617 C1.453,13.7924 3.178,14.3364 5.032,14.3364 C11.070,14.3364 14.371,9.3344 14.371,4.9964 C14.371,4.8544 14.368,4.7131 14.362,4.5724 C15.003,4.1091 15.56,3.5311 16,2.8724"></path>
-                </svg>
-            """,
-            "class": "",
-        },
     ],
 }
 
@@ -129,7 +123,7 @@ frozen_locals = dict(locals())
 rst_epilog = "\n".join(
     map(lambda x: f".. |{x}| replace:: {frozen_locals[x]}", variables_to_export)
 )
-del frozen_locals
+
 
 # Custom substitutions for links. Solution source:
 # https://docutils.sourceforge.io/docs/ref/rst/directives.html#directives-for-substitution-definitions

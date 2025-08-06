@@ -19,7 +19,7 @@ Configuration
 .. code-block:: yaml
 
     - repo: https://github.com/adrybakov/pre-commit-hooks
-      rev: 0.3.0                  # Check available tags on the GitHub page
+      rev: 0.3.1                  # Always use the last available tag
       hooks:
         - id: license-headers     # Required
           args:                   # Optional (as the next lines)

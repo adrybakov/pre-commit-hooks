@@ -1,6 +1,7 @@
+# ================================== LICENSE ===================================
 # MIT License
 #
-# Copyright (c) 2023-2025 Andrey Rybakov (rybakov.ad@icloud.com)
+# Copyright (c) 2023 - 2025 Andrey Rybakov (rybakov.ad@icloud.com)
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -19,8 +20,8 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-
-
+#
+# ================================ END LICENSE =================================
 from argparse import ArgumentParser
 from datetime import datetime
 
@@ -28,9 +29,6 @@ from datetime import datetime
 def ensure_license(
     filenames,
     license_template,
-    start_year=None,
-    author_name=None,
-    author_email=None,
     verbose=False,
 ):
     r"""
@@ -46,13 +44,6 @@ def ensure_license(
         List of file to which the license is added.
     license_template : list of str
         Path to the file with the template of the license.
-    start_year : str
-        Value for the placeholder ``{{start-year}}`` in the license template.
-    author_name : list of str
-        Value for the placeholder ``{{author-name}}`` in the license template.
-        Used as ``author_name = " ".join(author_name)``.
-    author-email : str
-        Value for the placeholder ``{{author-email}}`` in the license template.
     """
 
     license_start = f"# {' LICENSE ':=^78}\n"
@@ -64,32 +55,8 @@ def ensure_license(
 
     # Update placeholders with the data
     def get_data(placeholder_name):
-        if placeholder_name == "start-year":
-            if start_year is None:
-                raise ValueError(
-                    "start-year is not provided, "
-                    "please add an argument to the pre-commit config."
-                )
-            return start_year
-
         if placeholder_name == "current-year":
             return str(datetime.now().year)
-
-        if placeholder_name == "author-name":
-            if author_name is None:
-                raise ValueError(
-                    "author-name is not provided, "
-                    "please add an argument to the pre-commit config."
-                )
-            return " ".join(author_name)
-
-        if placeholder_name == "author-email":
-            if author_email is None:
-                raise ValueError(
-                    "author-email is not provided, "
-                    "please add an argument to the pre-commit config."
-                )
-            return author_email
 
         raise ValueError(f'Placeholder "{placeholder_name}" is not supported.')
 
@@ -117,7 +84,16 @@ def ensure_license(
         tmp_text.append(get_data(text_portion[0]))
         tmp_text.append(text_portion[1])
 
-    license_text = "# " + "\n# ".join("".join(tmp_text).split("\n")) + "\n"
+    # Add comment symbols at the beginning
+    tmp_text = "".join(tmp_text).split("\n")
+
+    for i in range(len(tmp_text)):
+        if len(tmp_text[i]) == 0:
+            tmp_text[i] = "#"
+        else:
+            tmp_text[i] = "# " + tmp_text[i]
+
+    license_text = "\n".join(tmp_text) + "\n"
 
     # Insert license text into the files
     for file in filenames:
@@ -145,7 +121,8 @@ def ensure_license(
         else:
             raise ValueError(
                 "License end and start are inconsistent. "
-                f"Start index: {license_start_index}, end index: {license_end_index}."
+                f"Start index: {license_start_index}, end index: {license_end_index}. "
+                f"File {file}"
             )
 
         with open(file, "w", encoding="utf-8") as f:
@@ -167,25 +144,6 @@ def main():
         "--license-template",
         default="LICENSE",
         help="Path to the template file of the license",
-    )
-    parser.add_argument(
-        "--start-year",
-        type=str,
-        default=None,
-        help="One of the data placeholders for the license template.",
-    )
-    parser.add_argument(
-        "--author-name",
-        type=str,
-        default=None,
-        nargs="*",
-        help="One of the data placeholders for the license template.",
-    )
-    parser.add_argument(
-        "--author-email",
-        type=str,
-        default=None,
-        help="One of the data placeholders for the license template.",
     )
     parser.add_argument(
         "-v",

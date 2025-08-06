@@ -20,67 +20,19 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import re
+
 from argparse import ArgumentParser
+from datetime import datetime
 
 
-def update_year(license_text):
-    r"""
-    Update the year in the license text to the current year.
-    It assumes that the year in the license file is written in one of the following formats
-    (assumed that 2023 is the current year):
-
-    * 2019
-        Updated to 2019-2023.
-    * 2019-2020
-        Updated to 2019-2023.
-    * 2019 - 2020
-        Updated to 2019 - 2023.
-
-    Every sequence of four digits, starting from :math:`1` or :math:`2`, is considered to be a year.
-
-    Parameters
-    ----------
-    license_text : list of str
-        The license text as a list of lines.
-
-    Returns
-    -------
-    license_text : list of str
-        The updated license text.
-    """
-
-    pattern1 = r"[1,2]\d{3}"
-    pattern2 = r"-[1,2]\d{3}"
-    pattern3 = r" - [1,2]\d{3}"
-
-    from datetime import datetime
-
-    for i, line in enumerate(license_text):
-        if re.search(pattern1 + pattern2, license_text[i]):
-            license_text[i] = re.sub(
-                pattern2,
-                f"-{datetime.now().year}",
-                line,
-            )
-        elif re.search(pattern1 + pattern3, license_text[i]):
-            license_text[i] = re.sub(
-                pattern3,
-                f" - {datetime.now().year}",
-                line,
-            )
-        elif re.search(pattern1, license_text[i]):
-            license_year = re.findall(pattern1, license_text[i])[0]
-            if int(license_year) < datetime.now().year:
-                license_text[i] = re.sub(
-                    pattern1,
-                    f"{license_year}-{datetime.now().year}",
-                    line,
-                )
-    return license_text
-
-
-def apply_license(file, license_text, verbose=False):
+def ensure_license(
+    filenames,
+    license_template,
+    start_year=None,
+    author_name=None,
+    author_email=None,
+    verbose=False,
+):
     r"""
     Insert license text at the top of the file.
 
@@ -90,38 +42,117 @@ def apply_license(file, license_text, verbose=False):
 
     Parameters
     ----------
-    file : str
-        The file to apply the license to.
-    license_text : list of str
-        The license text as a list of lines.
-    verbose : bool, default False
-        Whether to indicate which file is changed.
-
-        .. versionadded:: 0.2.0
+    filenames : list of str
+        List of file to which the license is added.
+    license_template : list of str
+        Path to the file with the template of the license.
+    start_year : str
+        Value for the placeholder ``{{start-year}}`` in the license template.
+    author_name : list of str
+        Value for the placeholder ``{{author-name}}`` in the license template.
+        Used as ``author_name = " ".join(author_name)``.
+    author-email : str
+        Value for the placeholder ``{{author-email}}`` in the license template.
     """
 
-    with open(file, "r") as f:
-        lines = f.readlines()
-    i = 0
-    if len(lines) > 0:
-        while i < len(lines) and (
-            re.fullmatch(r" *\n", lines[i]) or lines[i].startswith("#")
-        ):
-            i += 1
-        lines = lines[i:]
+    license_start = f"# {' LICENSE ':=^78}\n"
+    license_end = f"# {' END LICENSE ':=^78}\n"
 
-    license_text = [
-        f"# {line}" if not re.fullmatch(r" *\n", line) else "#\n"
-        for line in license_text
-    ]
+    # Read license text from the template
+    with open(license_template, "r") as f:
+        license_text = f.read()
 
-    with open(file, "w", encoding="utf-8") as f:
-        f.writelines(license_text)
-        f.write("\n")
-        f.write("\n")
-        f.writelines(lines)
-    if verbose:
-        print(f"Add license to the file {file}")
+    # Update placeholders with the data
+    def get_data(placeholder_name):
+        if placeholder_name == "start-year":
+            if start_year is None:
+                raise ValueError(
+                    "start-year is not provided, "
+                    "please add an argument to the pre-commit config."
+                )
+            return start_year
+
+        if placeholder_name == "current-year":
+            return str(datetime.now().year)
+
+        if placeholder_name == "author-name":
+            if author_name is None:
+                raise ValueError(
+                    "author-name is not provided, "
+                    "please add an argument to the pre-commit config."
+                )
+            return " ".join(author_name)
+
+        if placeholder_name == "author-email":
+            if author_email is None:
+                raise ValueError(
+                    "author-email is not provided, "
+                    "please add an argument to the pre-commit config."
+                )
+            return author_email
+
+        raise ValueError(f'Placeholder "{placeholder_name}" is not supported.')
+
+    license_text = license_text.split("{{")
+
+    tmp_text = []
+    if len(license_text) >= 1:
+        tmp_text.append(license_text[0])
+
+    for i in range(1, len(license_text)):
+        text_portion = license_text[i].split("}}")
+
+        if len(text_portion) == 1:
+            raise ValueError(
+                "data placeholder must be enclosed in the double figure "
+                'parenthesis, for example: "{{data-placeholder}}". Did not find closing '
+                f'"}}" for the opening "{{" number {i}.'
+            )
+
+        if len(text_portion) != 2:
+            raise ValueError(
+                f'Expected only one closing "}}", found {len(text_portion) - 1}.'
+            )
+
+        tmp_text.append(get_data(text_portion[0]))
+        tmp_text.append(text_portion[1])
+
+    license_text = "# " + "\n# ".join("".join(tmp_text).split("\n")) + "\n"
+
+    # Insert license text into the files
+    for file in filenames:
+        with open(file, "r") as f:
+            lines = f.readlines()
+
+        try:
+            license_start_index = lines.index(license_start)
+        except ValueError:
+            license_start_index = None
+
+        try:
+            license_end_index = lines.index(license_end)
+        except ValueError:
+            license_end_index = None
+
+        if license_start_index is None and license_end_index is None:
+            lines = [license_start, license_text, license_end] + lines
+        elif license_start_index is not None and license_end_index is not None:
+            lines = (
+                lines[: license_start_index + 1]
+                + [license_text]
+                + lines[license_end_index:]
+            )
+        else:
+            raise ValueError(
+                "License end and start are inconsistent. "
+                f"Start index: {license_start_index}, end index: {license_end_index}."
+            )
+
+        with open(file, "w", encoding="utf-8") as f:
+            f.writelines(lines)
+
+        if verbose:
+            print(f"Add license to the file {file}")
 
 
 def main():
@@ -132,17 +163,29 @@ def main():
         help="Files to which the license text is added.",
     )
     parser.add_argument(
-        "-lf",
-        "--license-file",
+        "-lt",
+        "--license-template",
         default="LICENSE",
-        help="Path to license file with the text for the headers.",
+        help="Path to the template file of the license",
     )
     parser.add_argument(
-        "-uy",
-        "--update-year",
-        default=False,
-        action="store_true",
-        help="Update the year in the license text.",
+        "--start-year",
+        type=str,
+        default=None,
+        help="One of the data placeholders for the license template.",
+    )
+    parser.add_argument(
+        "--author-name",
+        type=str,
+        default=None,
+        nargs="*",
+        help="One of the data placeholders for the license template.",
+    )
+    parser.add_argument(
+        "--author-email",
+        type=str,
+        default=None,
+        help="One of the data placeholders for the license template.",
     )
     parser.add_argument(
         "-v",
@@ -153,13 +196,7 @@ def main():
     )
     args = parser.parse_args()
 
-    with open(args.license_file, "r") as f:
-        license_text = f.readlines()
-    if args.update_year:
-        license_text = update_year(license_text)
-
-    for file in args.filenames:
-        apply_license(file, license_text, verbose=args.verbose)
+    ensure_license(**vars(args))
 
 
 if __name__ == "__main__":

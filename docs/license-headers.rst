@@ -19,17 +19,40 @@ Configuration
 .. code-block:: yaml
 
     - repo: https://github.com/adrybakov/pre-commit-hooks
-      rev: 0.2.0                # Check available tags on the GitHub page
+      rev: 0.3.0                          # Check available tags on the GitHub page
       hooks:
-        - id: license-headers   # Required
-          args:                 # Optional (as the next lines)
-            - --license-file    # If license summary is not in a "LICENSE" file
-            - LICENSE.txt       # Path to the license summary file
-            - --update-year     # If you want to automatically update the year
-            - --verbose         # (Added in 0.2.0) If you want each modified filename to be printed
+        - id: license-headers             # Required
+          args:                           # Optional (as the next lines)
+            - --license-template          # If license summary is not in a "LICENSE" file
+            - LICENSE.template            # Path to the license summary file
+            - --start-year                # If you use {{start-year}} in the template
+            - 2021                        # Value for {{start-year}}
+            - --author-name               # If you use {{author-name}} in the template
+            - Name Surname Extra Name     # Value for {{author-name}} (any amount of words)
+            - --author-email              # If you use {{author-email}} in the template
+            - some-email@some-address.com # Value for {{author-e-mail}}
 
 See `pre-commit docs <https://pre-commit.com/index.html#pre-commit-configyaml---hooks>`_
 for the list of additional parameters.
+
+License template
+================
+
+File with the license template support some dynamic placeholders:
+
+============================= ============================= =============================
+Placeholder                   User-provided value           Generated value
+============================= ============================= =============================
+``{{start-year}}``            Value of ``--start-year``     Unapplicable
+``{{current-year}}``          Unapplicable                  ``datetime.now().year``
+``{{author-name}}``           Value of ``--author-name``    Unapplicable
+``{{author-email}}``          Value of ``--author-email``   Unapplicable
+============================= ============================= =============================
+
+An example template is
+
+.. literalinclude:: ../LICENSE.template
+   :language: text
 
 Standalone usage
 ================
@@ -39,7 +62,7 @@ The above example will be equivalent to the following code (assuming that you
 
 .. code-block:: bash
 
-    license-headers some-filename-1.py some-filename-2.py --license-file LICENSE.txt --update-year
+    license-headers some-filename-1.py some-filename-2.py --license-template LICENSE.template --start-year 2021 --author-name Name Surname Extra Name --author-email some-email@some-address.com
 
 Implementation details
 ======================
@@ -48,9 +71,4 @@ Implementation details
 
 Text of the license is added via the call of the function:
 
-.. autofunction:: apply_license
-
-If ``--update-year`` is set to ``True`` then the year is update via the call
-of the function:
-
-.. autofunction:: update_year
+.. autofunction:: ensure_license

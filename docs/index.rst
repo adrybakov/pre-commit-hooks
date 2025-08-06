@@ -34,7 +34,7 @@ in the root of the repository. It's content typically looks like this:
 .. code-block:: yaml
 
     - repo: https://github.com/adrybakov/pre-commit-hooks
-      rev: 0.2.1                       # Check available tags on the GitHub page
+      rev: 0.3.0                       # Check available tags on the GitHub page
       hooks:
         - id: <first-hook-id>          # Required
           ....                         # Optional arguments for the first hook

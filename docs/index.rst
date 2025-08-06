@@ -58,6 +58,8 @@ Then install the git hook scripts:
 See `documentation <https://pre-commit.com/>`_ for more details.
 
 
+.. _standalone-usage:
+
 Standalone usage
 ================
 

@@ -3,8 +3,8 @@ Custom hooks for pre-commit
 ***************************
 
 
-.. image:: https://readthedocs.org/projects/pre-commit-hooks/badge/?version=latest
-    :target: https://pre-commit-hooks.readthedocs.io/en/latest/?badge=latest
+.. image:: https://readthedocs.org/projects/pre-commit-hooks/badge/?version=main
+    :target: https://pre-commit-hooks.readthedocs.io/en/main/?badge=main
     :alt: Documentation Status
 
 .. image:: https://img.shields.io/badge/code%20style-black-000000.svg

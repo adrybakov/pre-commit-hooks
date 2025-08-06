@@ -58,7 +58,7 @@ Standalone usage
 ================
 
 The above example will be equivalent to the following code (assuming that you
-`installed it with pip <https://pre-commit-hooks.readthedocs.io/en/latest/index.html#standalone-usage>`_):
+:ref:`installed it with pip <standalone-usage>`):
 
 .. code-block:: bash
 
